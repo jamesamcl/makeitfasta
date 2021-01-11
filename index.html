@@ -1,0 +1,72 @@
+<title>make it fasta</title>
+<h1>make it fasta</h1>
+
+<h2>give me some sequences</h2>
+
+<p>one on each line like:
+<pre>
+atcatcatc
+ctactacta
+</pre>
+<i>optionally</i> preceded by an identifier and some spaces or tabs like:
+<pre>
+firstseq        atcatcatc
+secondseq       ctactacta
+</pre>
+<p>(hint you can copy two columns from excel) and I will make it into fasta like:</p>
+<pre>
+&gt;firstseq
+atcatcatc
+&gt;secondseq
+ctactacta
+</pre>
+<p>ready for you to paste into the bioinformatics tool of your choice!</p>
+</p>
+
+<textarea style="width: 500px; height: 500px;"></textarea>
+<br>
+
+<input type="checkbox" id="ignorefirst" checked>ignore the first line (for example when you copied an excel column title)</input> <br/>
+<input type="checkbox" id="nodup" checked>prevent duplicate IDs by adding .1, .2, etc.</input> <br />
+<br/>
+<button onclick="javascript:fasta();"><h3>make it fasta</h3></button>
+<br/>
+
+<script type="text/javascript">
+        function fasta() {
+                var skipfirst = document.getElementById('ignorefirst').checked
+                var nodup = document.getElementById('nodup').checked
+                var input = document.getElementsByTagName('textarea')[0].value
+                var lines = input.split('\n')
+                var output = []
+                var ids = new Map()
+                var n = 1
+                if(skipfirst)
+                        lines.shift()
+                for(var line of lines) {
+                        if(line.match(/\s/).length === 0) {
+                                output.push('>seq' + n)
+                                output.push(line)
+                        } else {
+                                var id = line.split(/\s+/)[0]
+                                if(nodup) {
+                                        var seen = ids.get(id)
+                                        if(seen === undefined) {
+                                                id = id + '.' + 1
+                                                ids.set(id, 1)
+                                        } else {
+                                                id = id + '.' + seen
+                                                ids.set(id, seen + 1)
+                                        }
+                                }
+                                output.push('>' + id)
+                                output.push(line.split(/\s+/)[1])
+                        }
+                        ++ n
+                }
+                document.getElementsByTagName('textarea')[0].value = output.join('\n')
+                document.getElementsByTagName('img')[0].src = 'https://cataas.com/cat?'+ new Date().getTime();
+        }
+
+</script>
+
