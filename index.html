@@ -37,7 +37,7 @@ ctactacta
                 var skipfirst = document.getElementById('ignorefirst').checked
                 var nodup = document.getElementById('nodup').checked
                 var input = document.getElementsByTagName('textarea')[0].value
-                var lines = input.split('\n')
+                var lines = input.trim().split('\n')
                 var output = []
                 var ids = new Map()
                 var n = 1
