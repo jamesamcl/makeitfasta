@@ -44,7 +44,7 @@ ctactacta
                 if(skipfirst)
                         lines.shift()
                 for(var line of lines) {
-                        if(line.match(/\s/).length === 0) {
+                        if(!line.match(/\s/)) {
                                 output.push('>seq' + n)
                                 output.push(line)
                         } else {
